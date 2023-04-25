@@ -8,6 +8,7 @@ import pl.szczesniak.dominik.pointsale.product.domain.Product;
 import pl.szczesniak.dominik.pointsale.product.domain.model.ProductBarcode;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class BarCodeScannerService {
@@ -16,27 +17,27 @@ public class BarCodeScannerService {
 	private final LcdDisplay lcdDisplay;
 	private final DataBase repository;
 
-	public Product scan(final ProductBarcode productBarcode) {
-		final Product product = checkBarcodeExists(productBarcode);
-		checkProductIsValid(product);
-
-		receipts.addToReceipt(product);
-		lcdDisplay.printProduct(product);
+	public Optional<Product> scan(final ProductBarcode productBarcode) {
+		if (!barcodeExists(productBarcode)) {
+			lcdDisplay.printErrorMessage("Invalid bar-code");
+			return Optional.empty();
+		}
+		final Optional<Product> product = repository.find(productBarcode);
+		addToReceipt(product.get());
 		return product;
 	}
 
-	private Product checkBarcodeExists(final ProductBarcode productBarcode) {
-		if (repository.find(productBarcode).isEmpty()) {
-			lcdDisplay.printErrorMessage(new InvalidBarcodeException("Invalid bar-code"));
-			lcdDisplay.printMessage("Invalid bar-code");
-		}
-		return repository.find(productBarcode).get();
+	public boolean barcodeExists(final ProductBarcode productBarcode) {
+		return repository.exists(productBarcode);
 	}
 
-	private void checkProductIsValid(final Product product) {
-		if (product.getProductPrice() == null || product.getProductName() == null) {
-			lcdDisplay.printErrorMessage(new ProductNotFoundException("Product not found"));
+	private void addToReceipt(final Product product) {
+		if (product.getProductName() == null || product.getProductPrice() == null) {
+			lcdDisplay.printErrorMessage("Product not found");
+			return;
 		}
+		receipts.addToReceipt(product);
+		lcdDisplay.printProduct(product);
 	}
 
 	public List<Product> findAll() {

@@ -9,5 +9,6 @@ public interface DataBase {
 
 	Optional<Product> find(final ProductBarcode productBarcode);
 
+	boolean exists(ProductBarcode productBarcode);
 
 }

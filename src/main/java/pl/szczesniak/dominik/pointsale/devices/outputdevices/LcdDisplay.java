@@ -6,11 +6,7 @@ import java.util.List;
 
 public class LcdDisplay {
 
-	public void printErrorMessage(final RuntimeException runtimeException) {
-		throw runtimeException;
-	}
-
-	public void printMessage(final String message) {
+	public void printErrorMessage(final String message) {
 		System.out.println(message);
 	}
 

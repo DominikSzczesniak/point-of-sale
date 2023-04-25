@@ -2,8 +2,6 @@ package pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.model.exceptions.InvalidBarcodeException;
-import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.model.exceptions.ProductNotFoundException;
 import pl.szczesniak.dominik.pointsale.product.domain.Product;
 import pl.szczesniak.dominik.pointsale.product.domain.model.ProductBarcode;
 import pl.szczesniak.dominik.pointsale.product.domain.model.ProductName;
@@ -13,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.ProductScannerServiceTestConfiguration.productScannerService;
@@ -21,50 +18,54 @@ import static pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.Prod
 class BarCodeScannerServiceTest {
 
 	private BarCodeScannerService tut;
-	private DataBase dataBase;
+	private DataBase repository;
 
 	@BeforeEach
 	void setUp() {
-		dataBase = mock(DataBase.class);
-		tut = productScannerService(dataBase);
+		repository = mock(DataBase.class);
+		tut = productScannerService(repository);
 	}
 
 	@Test
 	void should_find_product() {
 		// given
 		final Product product = new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5));
-		when(dataBase.find(product.getProductBarcode())).thenReturn(Optional.of(new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5))));
+		when(repository.exists(product.getProductBarcode())).thenReturn(true);
+		when(repository.find(product.getProductBarcode())).thenReturn(Optional.of(new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5))));
 
 		// when
-		final Product foundProduct = tut.scan(product.getProductBarcode());
+		final Optional<Product> foundProduct = tut.scan(product.getProductBarcode());
 
 		// then
-		assertThat(foundProduct).isEqualTo(product);
+		assertThat(foundProduct.get()).isEqualTo(product);
 	}
 
 	@Test
-	void should_throw_exception_when_barcode_not_found() {
+	void should_return_empty_when_barcode_not_found() {
 		// given
 		final Product product = new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5));
+		when(repository.exists(product.getProductBarcode())).thenReturn(false);
 
 		// when
-		final Throwable thrown = catchThrowable(() -> tut.scan(product.getProductBarcode()));
+		final Optional<Product> scannedProduct = tut.scan(product.getProductBarcode());
 
 		// then
-		assertThat(thrown).isInstanceOf(InvalidBarcodeException.class);
+		assertThat(scannedProduct).isEmpty();
+
 	}
 
 	@Test
-	void barcode_should_not_have_a_product() {
+	void should_not_add_to_receipt_when_barcode_does_not_have_valid_product() {
 		// given
 		final ProductBarcode productBarcode = new ProductBarcode(5);
-		when(dataBase.find(productBarcode)).thenReturn(Optional.of(new Product(null, null, new ProductBarcode(5))));
+		when(repository.exists(productBarcode)).thenReturn(true);
+		when(repository.find(productBarcode)).thenReturn(Optional.of(new Product(null, null, new ProductBarcode(5))));
 
 		// when
-		final Throwable thrown = catchThrowable(() -> tut.scan(productBarcode));
+		tut.scan(productBarcode);
 
 		// then
-		assertThat(thrown).isInstanceOf(ProductNotFoundException.class);
+		assertThat(tut.findAll()).isEmpty();
 	}
 
 	@Test
@@ -73,9 +74,12 @@ class BarCodeScannerServiceTest {
 		final Product product1 = new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5));
 		final Product product2 = new Product(new ProductName("Apple"), new ProductPrice(0.89f), new ProductBarcode(12));
 		final Product product3 = new Product(new ProductName("Glasses"), new ProductPrice(15.89f), new ProductBarcode(9385));
-		when(dataBase.find(product1.getProductBarcode())).thenReturn(Optional.of(product1));
-		when(dataBase.find(product2.getProductBarcode())).thenReturn(Optional.of(product2));
-		when(dataBase.find(product3.getProductBarcode())).thenReturn(Optional.of(product3));
+		when(repository.exists(product1.getProductBarcode())).thenReturn(true);
+		when(repository.exists(product2.getProductBarcode())).thenReturn(true);
+		when(repository.exists(product3.getProductBarcode())).thenReturn(true);
+		when(repository.find(product1.getProductBarcode())).thenReturn(Optional.of(product1));
+		when(repository.find(product2.getProductBarcode())).thenReturn(Optional.of(product2));
+		when(repository.find(product3.getProductBarcode())).thenReturn(Optional.of(product3));
 
 		tut.scan(product1.getProductBarcode());
 		tut.scan(product2.getProductBarcode());

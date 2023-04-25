@@ -21,20 +21,21 @@ class LcdDisplayTest {
 
 	private LcdDisplay tut;
 	private BarCodeScannerService scanner;
-	private DataBase dataBase;
+	private DataBase repository;
 
 	@BeforeEach
 	void setUp() {
 		tut = mock(LcdDisplay.class);
-		dataBase = mock(DataBase.class);
-		scanner = new BarCodeScannerService(new InMemoryReceiptsRepository(), tut, dataBase);
+		repository = mock(DataBase.class);
+		scanner = new BarCodeScannerService(new InMemoryReceiptsRepository(), tut, repository);
 	}
 
 	@Test
 	void should_perform_print_product_method_when_found_product() {
 		// given
 		final Product product = new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5));
-		when(dataBase.find(product.getProductBarcode())).thenReturn(Optional.of(product));
+		when(repository.exists(product.getProductBarcode())).thenReturn(true);
+		when(repository.find(product.getProductBarcode())).thenReturn(Optional.of(product));
 
 		// when
 		scanner.scan(product.getProductBarcode());
@@ -44,17 +45,30 @@ class LcdDisplayTest {
 	}
 
 	@Test
-	void should_perform_print_error_message_method_when_product_not_found() {
+	void should_perform_print_error_message_method_when_barcode_not_found() {
 		// given
-		final Product product = new Product(null, new ProductPrice(1.89f), new ProductBarcode(5));
-		final ProductNotFoundException exceptionToBeThrown = new ProductNotFoundException("Product not found");
-		when(dataBase.find(product.getProductBarcode())).thenReturn(Optional.of(product));
+		final Product product = new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5));
+		when(repository.exists(product.getProductBarcode())).thenReturn(false);
 
 		// when
 		scanner.scan(product.getProductBarcode());
 
 		// then
-		verify(tut).printErrorMessage(exceptionToBeThrown);
+		verify(tut).printErrorMessage("Invalid bar-code");
+	}
+
+	@Test
+	void should_perform_print_error_message_method_when_product_has_no_productname() {
+		// given
+		final Product product = new Product(null, new ProductPrice(1.89f), new ProductBarcode(5));
+		when(repository.exists(product.getProductBarcode())).thenReturn(true);
+		when(repository.find(product.getProductBarcode())).thenReturn(Optional.of(product));
+
+		// when
+		scanner.scan(product.getProductBarcode());
+
+		// then
+		verify(tut).printErrorMessage("Product not found");
 	}
 
 }
