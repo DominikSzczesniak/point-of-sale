@@ -105,9 +105,9 @@ class BarCodeScannerServiceTest {
 		when(repository.find(product2.getProductBarcode())).thenReturn(Optional.of(product2));
 		when(repository.find(product3.getProductBarcode())).thenReturn(Optional.of(product3));
 
-		tut.scan(product1.getProductBarcode()).get();
-		tut.scan(product2.getProductBarcode()).get();
-		tut.scan(product3.getProductBarcode()).get();
+		tut.scan(product1.getProductBarcode());
+		tut.scan(product2.getProductBarcode());
+		tut.scan(product3.getProductBarcode());
 
 		// when
 		final List<Product> products = tut.findAll();
@@ -117,8 +117,8 @@ class BarCodeScannerServiceTest {
 				.containsExactlyInAnyOrder(product1.getProductBarcode(), product2.getProductBarcode(), product3.getProductBarcode());
 	}
 
-
 	private static Product randomProduct() {
 		return new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5));
 	}
+
 }

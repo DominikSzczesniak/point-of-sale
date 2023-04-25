@@ -15,7 +15,6 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
 
-    <commons-lang3.version>3.12.0</commons-lang3.version>
     <lombok.version>1.18.26</lombok.version>
 
     <mockito-core.version>5.3.0</mockito-core.version>
@@ -24,12 +23,6 @@
   </properties>
 
   <dependencies>
-
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>${commons-lang3.version}</version>
-    </dependency>
 
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -58,5 +51,6 @@
       <version>${junit-jupiter.version}</version>
       <scope>test</scope>
     </dependency>
+
   </dependencies>
 </project>
