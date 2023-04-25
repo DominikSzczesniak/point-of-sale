@@ -1,8 +1,7 @@
 package pl.szczesniak.dominik.pointsale;
 
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.BarCodeScannerService;
-import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.DataBase;
-import pl.szczesniak.dominik.pointsale.devices.barcodescanner.infrastructure.persistence.InMemoryReceiptsRepository;
+import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.BarCodeScannerServiceConfiguration;
 import pl.szczesniak.dominik.pointsale.devices.outputdevices.LcdDisplay;
 import pl.szczesniak.dominik.pointsale.devices.outputdevices.Printer;
 import pl.szczesniak.dominik.pointsale.product.domain.Product;
@@ -17,20 +16,7 @@ public class PointOfSaleConsoleApp {
 	private final Scanner scan = new Scanner(System.in);
 	private final Printer printer = new Printer();
 	private final LcdDisplay lcdDisplay = new LcdDisplay();
-	private final BarCodeScannerService barCodeScannerService = new BarCodeScannerService(
-			new InMemoryReceiptsRepository(),
-			new DataBase() {
-				@Override
-				public Optional<Product> find(final ProductBarcode productBarcode) {
-					return Optional.empty();
-				}
-
-				@Override
-				public boolean exists(final ProductBarcode productBarcode) {
-					return false;
-				}
-			}
-	);
+	private final BarCodeScannerService barCodeScannerService = new BarCodeScannerServiceConfiguration().barCodeScannerService();
 
 	public PointOfSaleConsoleApp() {
 		System.out.println("|----------------------------------------------------------|");
