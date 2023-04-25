@@ -10,7 +10,7 @@ import pl.szczesniak.dominik.pointsale.product.domain.model.ProductBarcode;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class ProductScannerService {
+public class BarCodeScannerService {
 
 	private final ReceiptsRepository receipts;
 	private final LcdDisplay lcdDisplay;

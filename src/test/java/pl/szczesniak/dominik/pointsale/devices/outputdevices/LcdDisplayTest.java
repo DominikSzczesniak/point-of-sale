@@ -3,8 +3,7 @@ package pl.szczesniak.dominik.pointsale.devices.outputdevices;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.DataBase;
-import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.ProductScannerService;
-import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.model.exceptions.InvalidBarcodeException;
+import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.BarCodeScannerService;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.model.exceptions.ProductNotFoundException;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.infrastructure.InMemoryReceiptsRepository;
 import pl.szczesniak.dominik.pointsale.product.domain.Product;
@@ -15,21 +14,20 @@ import pl.szczesniak.dominik.pointsale.product.domain.model.ProductPrice;
 import java.util.Optional;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class LcdDisplayTest {
 
 	private LcdDisplay tut;
-	private ProductScannerService scanner;
+	private BarCodeScannerService scanner;
 	private DataBase dataBase;
 
 	@BeforeEach
 	void setUp() {
 		tut = mock(LcdDisplay.class);
 		dataBase = mock(DataBase.class);
-		scanner = new ProductScannerService(new InMemoryReceiptsRepository(), tut, dataBase);
+		scanner = new BarCodeScannerService(new InMemoryReceiptsRepository(), tut, dataBase);
 	}
 
 	@Test

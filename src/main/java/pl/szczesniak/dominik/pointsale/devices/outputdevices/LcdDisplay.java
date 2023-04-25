@@ -27,6 +27,8 @@ public class LcdDisplay {
 		System.out.println("|LCD|");
 		System.out.println("|---|");
 		System.out.printf("Price to pay: " + "%.2f", price);
+		System.out.println();
+		System.out.println();
 	}
 
 }

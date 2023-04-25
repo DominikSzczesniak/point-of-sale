@@ -28,6 +28,8 @@ public class Printer {
 		System.out.println("|Printer|");
 		System.out.println("|-------|");
 		System.out.printf("Price to pay: " + "%.2f", price);
+		System.out.println();
+		System.out.println();
 	}
 
 }
