@@ -32,7 +32,7 @@ class LcdDisplayTest {
 	@Test
 	void should_perform_print_product_method_when_found_product() {
 		// given
-		final Product product = new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5));
+		final Product product = anyProduct();
 		when(repository.exists(product.getProductBarcode())).thenReturn(true);
 		when(repository.find(product.getProductBarcode())).thenReturn(Optional.of(product));
 
@@ -46,7 +46,7 @@ class LcdDisplayTest {
 	@Test
 	void should_perform_print_error_message_method_when_barcode_not_found() {
 		// given
-		final Product product = new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5));
+		final Product product = anyProduct();
 		when(repository.exists(product.getProductBarcode())).thenReturn(false);
 
 		// when
@@ -68,6 +68,10 @@ class LcdDisplayTest {
 
 		// then
 		verify(tut).printErrorMessage("Product not found");
+	}
+
+	private static Product anyProduct() {
+		return new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5));
 	}
 
 }
