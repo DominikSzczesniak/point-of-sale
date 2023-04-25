@@ -2,10 +2,9 @@ package pl.szczesniak.dominik.pointsale.devices.outputdevices;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.DataBase;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.BarCodeScannerService;
-import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.model.exceptions.ProductNotFoundException;
-import pl.szczesniak.dominik.pointsale.devices.barcodescanner.infrastructure.InMemoryReceiptsRepository;
+import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.DataBase;
+import pl.szczesniak.dominik.pointsale.devices.barcodescanner.infrastructure.persistence.InMemoryReceiptsRepository;
 import pl.szczesniak.dominik.pointsale.product.domain.Product;
 import pl.szczesniak.dominik.pointsale.product.domain.model.ProductBarcode;
 import pl.szczesniak.dominik.pointsale.product.domain.model.ProductName;

@@ -1,6 +1,6 @@
 package pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain;
 
-import pl.szczesniak.dominik.pointsale.devices.barcodescanner.infrastructure.InMemoryReceiptsRepository;
+import pl.szczesniak.dominik.pointsale.devices.barcodescanner.infrastructure.persistence.InMemoryReceiptsRepository;
 import pl.szczesniak.dominik.pointsale.devices.outputdevices.LcdDisplay;
 import pl.szczesniak.dominik.pointsale.product.domain.Product;
 import pl.szczesniak.dominik.pointsale.product.domain.model.ProductBarcode;

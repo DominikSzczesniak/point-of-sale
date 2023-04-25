@@ -1,4 +1,4 @@
-package pl.szczesniak.dominik.pointsale.devices.barcodescanner.infrastructure;
+package pl.szczesniak.dominik.pointsale.devices.barcodescanner.infrastructure.persistence;
 
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.ReceiptsRepository;
 import pl.szczesniak.dominik.pointsale.product.domain.Product;
