@@ -24,6 +24,9 @@ public class Printer {
 		for (Product product : products) {
 			price += product.getProductPrice().getValue();
 		}
+		System.out.println("|-------|");
+		System.out.println("|Printer|");
+		System.out.println("|-------|");
 		System.out.printf("Price to pay: " + "%.2f", price);
 	}
 

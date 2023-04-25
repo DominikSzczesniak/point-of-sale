@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.DataBase;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.ProductScannerService;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.model.exceptions.InvalidBarcodeException;
+import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.model.exceptions.ProductNotFoundException;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.infrastructure.InMemoryReceiptsRepository;
 import pl.szczesniak.dominik.pointsale.product.domain.Product;
 import pl.szczesniak.dominik.pointsale.product.domain.model.ProductBarcode;
@@ -13,7 +14,6 @@ import pl.szczesniak.dominik.pointsale.product.domain.model.ProductPrice;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -46,16 +46,17 @@ class LcdDisplayTest {
 	}
 
 	@Test
-	void should_perform_print_error_message_method_when_barcode_not_found() {
+	void should_perform_print_error_message_method_when_product_not_found() {
 		// given
-		final Product product = new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5));
-		final InvalidBarcodeException exceptionToBeThrown = new InvalidBarcodeException("Invalid bar-code");
+		final Product product = new Product(null, new ProductPrice(1.89f), new ProductBarcode(5));
+		final ProductNotFoundException exceptionToBeThrown = new ProductNotFoundException("Product not found");
+		when(dataBase.find(product.getProductBarcode())).thenReturn(Optional.of(product));
 
 		// when
-//		final Throwable thrown = catchThrowable(() -> scanner.scan(product.getProductBarcode())); TODO: nie wiem zle ten test
+		scanner.scan(product.getProductBarcode());
 
 		// then
-		verify(tut, times(1)).printErrorMessage(exceptionToBeThrown);
+		verify(tut).printErrorMessage(exceptionToBeThrown);
 	}
 
 }

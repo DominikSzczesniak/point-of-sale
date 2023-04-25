@@ -70,20 +70,34 @@ class ProductScannerServiceTest {
 	}
 
 	@Test
-	void should_find_all_previously_added_products() {
+	void should_find_all_previously_scanned_products() {
 		// given
 		final Product product1 = new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5));
 		final Product product2 = new Product(new ProductName("Apple"), new ProductPrice(0.89f), new ProductBarcode(12));
 		final Product product3 = new Product(new ProductName("Glasses"), new ProductPrice(15.89f), new ProductBarcode(9385));
-		tut.addToReceipt(product1);
-		tut.addToReceipt(product2);
-		tut.addToReceipt(product3);
+		when(dataBase.find(product1.getProductBarcode())).thenReturn(Optional.of(product1));
+		when(dataBase.find(product2.getProductBarcode())).thenReturn(Optional.of(product2));
+		when(dataBase.find(product3.getProductBarcode())).thenReturn(Optional.of(product3));
+
+		tut.scan(product1.getProductBarcode());
+		tut.scan(product2.getProductBarcode());
+		tut.scan(product3.getProductBarcode());
 
 		// when
-		List<Product> products = tut.findAll();
+		final List<Product> products = tut.findAll();
 
 		// then
-		assertThat(products).hasSize(3);
+		assertThat(products).hasSize(3).extracting(Product::getProductBarcode)
+				.containsExactlyInAnyOrder(product1.getProductBarcode(), product2.getProductBarcode(), product3.getProductBarcode());
+	}
+
+	@Test
+	void should_have_no_products_when_previously_nothing_scanned() {
+		// when
+		final List<Product> products = tut.findAll();
+
+		// then
+		assertThat(products).isEmpty();
 	}
 
 }

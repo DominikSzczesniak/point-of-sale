@@ -16,56 +16,27 @@ public class ProductScannerService {
 	private final LcdDisplay lcdDisplay;
 	private final DataBase repository;
 
-	public Product scan(final ProductBarcode productBarcode) { // TODO: 3 razy wyciagam z repo;; resolveScannedProductStatus, booleany z tych checkow i jesli true to x, variable scannedproductstatus
-		checkBarcodeExists(productBarcode);
-		checkBarcodeHasProduct(productBarcode);
+	public Product scan(final ProductBarcode productBarcode) {
+		final Product product = checkBarcodeExists(productBarcode);
+		checkProductIsValid(product);
 
-		final Product product = repository.find(productBarcode).get();
 		receipts.addToReceipt(product);
 		lcdDisplay.printProduct(product);
 		return product;
 	}
 
-	private void checkBarcodeExists(final ProductBarcode productBarcode) {
+	private Product checkBarcodeExists(final ProductBarcode productBarcode) {
 		if (repository.find(productBarcode).isEmpty()) {
 			lcdDisplay.printErrorMessage(new InvalidBarcodeException("Invalid bar-code"));
-//			throw new InvalidBarcodeException("Invalid bar-code");
+			lcdDisplay.printMessage("Invalid bar-code");
 		}
+		return repository.find(productBarcode).get();
 	}
 
-	private void checkBarcodeHasProduct(final ProductBarcode productBarcode) {
-		if (repository.find(productBarcode)
-				.stream()
-				.anyMatch(product -> product.getProductName() == null || product.getProductPrice() == null)) {
+	private void checkProductIsValid(final Product product) {
+		if (product.getProductPrice() == null || product.getProductName() == null) {
 			lcdDisplay.printErrorMessage(new ProductNotFoundException("Product not found"));
 		}
-	}
-
-//	public Product scan(final ProductBarcode productBarcode) { // TODO: 3 razy wyciagam z repo;; resolveScannedProductStatus, booleany z tych checkow i jesli true to x, variable scannedproductstatus
-//		final Optional<Product> product = repository.find(productBarcode);
-//		checkBarcodeExists(product);
-//		checkBarcodeHasProduct(product.get());
-//
-//		final Product product = repository.find(productBarcode).get();
-//		receipts.addToReceipt(product.get());
-//		lcdService.printProduct(product.get());
-//		return product.get();
-//	}
-//
-//	private void checkBarcodeExists(final Optional<Product> product) {
-//		if (product.isEmpty()) {
-//			lcdService.printErrorMessage(new InvalidBarcodeException("Invalid bar-code"));
-//		}
-//	}
-//
-//	private void checkBarcodeHasProduct(final Product product) {
-//		if (product.getProductName() == null || product.getProductPrice() == null) {
-//			lcdService.printErrorMessage(new ProductNotFoundException("Product not found"));
-//		}
-//	}
-
-	public void addToReceipt(final Product product) {
-		receipts.addToReceipt(product);
 	}
 
 	public List<Product> findAll() {
