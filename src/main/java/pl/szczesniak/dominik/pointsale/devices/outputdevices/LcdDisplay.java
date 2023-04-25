@@ -6,7 +6,7 @@ import java.util.List;
 
 public class LcdDisplay {
 
-	public void printErrorMessage(final String message) {
+	public void printMessage(final String message) {
 		System.out.println(message);
 	}
 

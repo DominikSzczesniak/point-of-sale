@@ -8,6 +8,7 @@ import pl.szczesniak.dominik.pointsale.product.domain.Product;
 import pl.szczesniak.dominik.pointsale.product.domain.model.ProductBarcode;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class PointOfSaleConsoleApp {
@@ -31,7 +32,7 @@ public class PointOfSaleConsoleApp {
 		exitAndPrintReceipt(barcode, isBarcode);
 
 		if (!"exit".equals(barcode)) {
-			barCodeScannerService.scan(new ProductBarcode(Integer.parseInt(barcode)));
+			scanProduct(barcode);
 			run();
 		}
 	}
@@ -41,6 +42,17 @@ public class PointOfSaleConsoleApp {
 			final List<Product> products = barCodeScannerService.findAll();
 			printer.printReceipt(products);
 			lcdDisplay.printPriceToPay(products);
+		}
+	}
+
+	private void scanProduct(final String barcode) {
+		final Optional<Product> scannedProduct = barCodeScannerService.scan(new ProductBarcode(Integer.parseInt(barcode)));
+		if (scannedProduct.isEmpty()) {
+			lcdDisplay.printMessage("Invalid bar-code");
+		} else if (scannedProduct.get().getProductPrice() == null || scannedProduct.get().getProductName() == null) {
+			lcdDisplay.printMessage("Product not found");
+		} else {
+			lcdDisplay.printProduct(scannedProduct.get());
 		}
 	}
 
