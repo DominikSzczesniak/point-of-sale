@@ -1,13 +1,15 @@
 package pl.szczesniak.dominik.pointsale;
 
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.BarCodeScannerService;
-import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.BarCodeScannerServiceConfiguration;
+import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.DataBase;
+import pl.szczesniak.dominik.pointsale.devices.barcodescanner.infrastructure.persistence.InMemoryReceiptsRepository;
 import pl.szczesniak.dominik.pointsale.devices.outputdevices.LcdDisplay;
 import pl.szczesniak.dominik.pointsale.devices.outputdevices.Printer;
 import pl.szczesniak.dominik.pointsale.product.domain.Product;
 import pl.szczesniak.dominik.pointsale.product.domain.model.ProductBarcode;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class PointOfSaleConsoleApp {
@@ -15,7 +17,20 @@ public class PointOfSaleConsoleApp {
 	private final Scanner scan = new Scanner(System.in);
 	private final Printer printer = new Printer();
 	private final LcdDisplay lcdDisplay = new LcdDisplay();
-	private final BarCodeScannerService barCodeScannerService = new BarCodeScannerServiceConfiguration().barCodeScannerService();
+	private final BarCodeScannerService barCodeScannerService = new BarCodeScannerService(
+			new InMemoryReceiptsRepository(),
+			new DataBase() {
+				@Override
+				public Optional<Product> find(final ProductBarcode productBarcode) {
+					return Optional.empty();
+				}
+
+				@Override
+				public boolean exists(final ProductBarcode productBarcode) {
+					return false;
+				}
+			}
+	);
 
 	public PointOfSaleConsoleApp() {
 		System.out.println("|----------------------------------------------------------|");
@@ -31,7 +46,7 @@ public class PointOfSaleConsoleApp {
 		exitAndPrintReceipt(barcode, isBarcode);
 
 		if (!"exit".equals(barcode)) {
-			barCodeScannerService.scan(new ProductBarcode(Integer.parseInt(barcode)));
+			scanProduct(barcode);
 			run();
 		}
 	}
@@ -41,6 +56,17 @@ public class PointOfSaleConsoleApp {
 			final List<Product> products = barCodeScannerService.findAll();
 			printer.printReceipt(products);
 			lcdDisplay.printPriceToPay(products);
+		}
+	}
+
+	private void scanProduct(final String barcode) {
+		final Optional<Product> scannedProduct = barCodeScannerService.scan(new ProductBarcode(Integer.parseInt(barcode)));
+		if (scannedProduct.isEmpty()) {
+			lcdDisplay.printMessage("Invalid bar-code");
+		} else if (scannedProduct.get().getProductPrice() == null || scannedProduct.get().getProductName() == null) {
+			lcdDisplay.printMessage("Product not found");
+		} else {
+			lcdDisplay.printProduct(scannedProduct.get());
 		}
 	}
 
