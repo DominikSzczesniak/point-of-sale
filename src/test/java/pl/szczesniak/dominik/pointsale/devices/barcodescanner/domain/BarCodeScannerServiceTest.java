@@ -54,7 +54,7 @@ class BarCodeScannerServiceTest {
 		// given
 		final Product product = randomProduct();
 		when(repository.exists(product.getProductBarcode())).thenReturn(true);
-		when(repository.find(product.getProductBarcode())).thenReturn(Optional.of(new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5))));
+		when(repository.find(product.getProductBarcode())).thenReturn(Optional.of(product));
 		tut.scan(product.getProductBarcode()).get();
 
 		// when
@@ -67,7 +67,7 @@ class BarCodeScannerServiceTest {
 	@Test
 	void should_return_empty_when_barcode_not_found() {
 		// given
-		final ProductBarcode createdProductBarcode = new ProductBarcode(14213);
+		final ProductBarcode createdProductBarcode = randomBarcode();
 		when(repository.exists(createdProductBarcode)).thenReturn(false);
 
 		// when
@@ -80,7 +80,7 @@ class BarCodeScannerServiceTest {
 	@Test
 	void should_not_add_to_receipt_when_barcode_not_found() {
 		// given
-		final ProductBarcode createdProductBarcode = new ProductBarcode(123);
+		final ProductBarcode createdProductBarcode = randomBarcode();
 		when(repository.exists(createdProductBarcode)).thenReturn(false);
 		tut.scan(createdProductBarcode);
 
@@ -94,9 +94,9 @@ class BarCodeScannerServiceTest {
 	@Test
 	void should_not_add_to_receipt_when_barcode_does_not_have_valid_product() {
 		// given
-		final ProductBarcode productBarcode = new ProductBarcode(5);
+		final ProductBarcode productBarcode = randomBarcode();
 		when(repository.exists(productBarcode)).thenReturn(true);
-		when(repository.find(productBarcode)).thenReturn(Optional.of(new Product(null, null, new ProductBarcode(5))));
+		when(repository.find(productBarcode)).thenReturn(Optional.of(new Product(null, null, productBarcode)));
 
 		// when
 		tut.scan(productBarcode);
@@ -132,6 +132,10 @@ class BarCodeScannerServiceTest {
 
 	private static Product randomProduct() {
 		return new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5));
+	}
+
+	private static ProductBarcode randomBarcode() {
+		return new ProductBarcode(14213);
 	}
 
 }
