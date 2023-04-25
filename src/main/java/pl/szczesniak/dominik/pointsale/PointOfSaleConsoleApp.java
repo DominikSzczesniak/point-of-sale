@@ -27,9 +27,8 @@ public class PointOfSaleConsoleApp {
 	public void run() {
 		System.out.println("Enter Barcode");
 		final String barcode = scan.nextLine();
-		final boolean isBarcode = Character.isDigit(barcode.charAt(0));
 
-		exitAndPrintReceipt(barcode, isBarcode);
+		exitAndPrintReceipt(barcode);
 
 		if (!"exit".equals(barcode)) {
 			scanProduct(barcode);
@@ -37,8 +36,8 @@ public class PointOfSaleConsoleApp {
 		}
 	}
 
-	private void exitAndPrintReceipt(final String barcode, final boolean isBarcode) {
-		if (!isBarcode && "exit".equals(barcode)) {
+	private void exitAndPrintReceipt(final String barcode) {
+		if (!Character.isDigit(barcode.charAt(0)) && "exit".equals(barcode)) {
 			final List<Product> products = barCodeScannerService.findAll();
 			printer.printReceipt(products);
 			lcdDisplay.printPriceToPay(products);
