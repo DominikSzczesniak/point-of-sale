@@ -31,13 +31,22 @@ class BarCodeScannerServiceTest {
 		// given
 		final Product product = randomProduct();
 		when(repository.exists(product.getProductBarcode())).thenReturn(true);
-		when(repository.find(product.getProductBarcode())).thenReturn(Optional.of(new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5))));
+		when(repository.find(product.getProductBarcode())).thenReturn(Optional.of(product));
 
 		// when
 		final Product foundProduct = tut.scan(product.getProductBarcode()).get();
 
 		// then
 		assertThat(foundProduct).isEqualTo(product);
+	}
+
+	@Test
+	void should_have_no_products_when_previously_nothing_scanned() {
+		// when
+		final List<Product> products = tut.findAll();
+
+		// then
+		assertThat(products).isEmpty();
 	}
 
 	@Test
@@ -56,26 +65,30 @@ class BarCodeScannerServiceTest {
 	}
 
 	@Test
-	void should_have_no_products_when_previously_nothing_scanned() {
+	void should_return_empty_when_barcode_not_found() {
+		// given
+		final ProductBarcode createdProductBarcode = new ProductBarcode(14213);
+		when(repository.exists(createdProductBarcode)).thenReturn(false);
+
+		// when
+		final Optional<Product> scannedProduct = tut.scan(createdProductBarcode);
+
+		// then
+		assertThat(scannedProduct).isEmpty();
+	}
+
+	@Test
+	void should_not_add_to_receipt_when_barcode_not_found() {
+		// given
+		final ProductBarcode createdProductBarcode = new ProductBarcode(123);
+		when(repository.exists(createdProductBarcode)).thenReturn(false);
+		tut.scan(createdProductBarcode);
+
 		// when
 		final List<Product> products = tut.findAll();
 
 		// then
 		assertThat(products).isEmpty();
-	}
-
-	@Test
-	void should_return_empty_when_barcode_not_found() {
-		// given
-		final Product product = randomProduct();
-		when(repository.exists(product.getProductBarcode())).thenReturn(false);
-
-		// when
-		final Optional<Product> scannedProduct = tut.scan(product.getProductBarcode());
-
-		// then
-		assertThat(scannedProduct).isEmpty();
-
 	}
 
 	@Test

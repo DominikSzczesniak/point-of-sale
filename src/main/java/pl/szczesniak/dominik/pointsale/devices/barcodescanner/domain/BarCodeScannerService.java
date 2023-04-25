@@ -1,5 +1,6 @@
 package pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import pl.szczesniak.dominik.pointsale.product.domain.Product;
 import pl.szczesniak.dominik.pointsale.product.domain.model.ProductBarcode;
@@ -7,7 +8,7 @@ import pl.szczesniak.dominik.pointsale.product.domain.model.ProductBarcode;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class BarCodeScannerService {
 
 	private final ReceiptsRepository receipts;
@@ -22,7 +23,7 @@ public class BarCodeScannerService {
 		return product;
 	}
 
-	public boolean barcodeExists(final ProductBarcode productBarcode) {
+	private boolean barcodeExists(final ProductBarcode productBarcode) {
 		return repository.exists(productBarcode);
 	}
 
