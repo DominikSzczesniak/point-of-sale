@@ -4,10 +4,10 @@ import pl.szczesniak.dominik.pointsale.PointOfSaleConsoleApp;
 
 public class App {
 
-    public static void main( String[] args ) {
+	public static void main(String[] args) {
 
-        new PointOfSaleConsoleApp().run();
+		new PointOfSaleConsoleApp().run();
 
-    }
+	}
 
 }

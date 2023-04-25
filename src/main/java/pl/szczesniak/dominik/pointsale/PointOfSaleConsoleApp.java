@@ -43,9 +43,9 @@ public class PointOfSaleConsoleApp {
 	}
 
 	private void exitAndPrintReceipt() {
-			final List<Product> products = barCodeScannerService.findAll();
-			printer.printReceipt(products);
-			lcdDisplay.printPriceToPay(products);
+		final List<Product> products = barCodeScannerService.findAll();
+		printer.printReceipt(products);
+		lcdDisplay.printPriceToPay(products);
 	}
 
 	private void scanProduct(final String barcode) {
