@@ -29,21 +29,45 @@ class BarCodeScannerServiceTest {
 	@Test
 	void should_find_product() {
 		// given
-		final Product product = new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5));
+		final Product product = randomProduct();
 		when(repository.exists(product.getProductBarcode())).thenReturn(true);
 		when(repository.find(product.getProductBarcode())).thenReturn(Optional.of(new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5))));
 
 		// when
-		final Optional<Product> foundProduct = tut.scan(product.getProductBarcode());
+		final Product foundProduct = tut.scan(product.getProductBarcode()).get();
 
 		// then
-		assertThat(foundProduct.get()).isEqualTo(product);
+		assertThat(foundProduct).isEqualTo(product);
+	}
+
+	@Test
+	void should_add_scanned_product_to_receipt() {
+		// given
+		final Product product = randomProduct();
+		when(repository.exists(product.getProductBarcode())).thenReturn(true);
+		when(repository.find(product.getProductBarcode())).thenReturn(Optional.of(new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5))));
+		tut.scan(product.getProductBarcode()).get();
+
+		// when
+		final List<Product> products = tut.findAll();
+
+		// then
+		assertThat(products).hasSize(1);
+	}
+
+	@Test
+	void should_have_no_products_when_previously_nothing_scanned() {
+		// when
+		final List<Product> products = tut.findAll();
+
+		// then
+		assertThat(products).isEmpty();
 	}
 
 	@Test
 	void should_return_empty_when_barcode_not_found() {
 		// given
-		final Product product = new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5));
+		final Product product = randomProduct();
 		when(repository.exists(product.getProductBarcode())).thenReturn(false);
 
 		// when
@@ -93,13 +117,8 @@ class BarCodeScannerServiceTest {
 				.containsExactlyInAnyOrder(product1.getProductBarcode(), product2.getProductBarcode(), product3.getProductBarcode());
 	}
 
-	@Test
-	void should_have_no_products_when_previously_nothing_scanned() {
-		// when
-		final List<Product> products = tut.findAll();
-
-		// then
-		assertThat(products).isEmpty();
+	private static Product randomProduct() {
+		return new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5));
 	}
 
 }
