@@ -1,8 +1,8 @@
-package pl.szczesniak.dominik.pointsale.devices.outputdevices.lcddisplay;
+package pl.szczesniak.dominik.pointsale.devices.outputdevices;
 
 import pl.szczesniak.dominik.pointsale.product.domain.Product;
 
-public class LcdService {
+public class LcdDisplay {
 
 	public void printErrorMessage(final RuntimeException runtimeException) {
 		throw runtimeException;
