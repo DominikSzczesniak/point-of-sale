@@ -1,4 +1,4 @@
-package pl.szczesniak.dominik.pointsale.product.domain.model;
+package pl.szczesniak.dominik.pointsale.products.domain.model;
 
 import lombok.NonNull;
 import lombok.Value;

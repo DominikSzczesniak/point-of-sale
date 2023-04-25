@@ -1,8 +1,8 @@
 package pl.szczesniak.dominik.pointsale.devices.barcodescanner.infrastructure.persistence;
 
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.ReceiptsRepository;
-import pl.szczesniak.dominik.pointsale.product.domain.Product;
-import pl.szczesniak.dominik.pointsale.product.domain.model.ProductBarcode;
+import pl.szczesniak.dominik.pointsale.products.domain.Product;
+import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
 
 import java.util.HashMap;
 import java.util.List;

@@ -4,8 +4,8 @@ import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.BarCodeScan
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.BarCodeScannerServiceConfiguration;
 import pl.szczesniak.dominik.pointsale.devices.outputdevices.LcdDisplay;
 import pl.szczesniak.dominik.pointsale.devices.outputdevices.Printer;
-import pl.szczesniak.dominik.pointsale.product.domain.Product;
-import pl.szczesniak.dominik.pointsale.product.domain.model.ProductBarcode;
+import pl.szczesniak.dominik.pointsale.products.domain.Product;
+import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
 
 import java.util.List;
 import java.util.Optional;

@@ -2,8 +2,9 @@ package pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import pl.szczesniak.dominik.pointsale.product.domain.Product;
-import pl.szczesniak.dominik.pointsale.product.domain.model.ProductBarcode;
+import pl.szczesniak.dominik.pointsale.products.domain.ProductsRepository;
+import pl.szczesniak.dominik.pointsale.products.domain.Product;
+import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +13,7 @@ import java.util.Optional;
 public class BarCodeScannerService {
 
 	private final ReceiptsRepository receipts;
-	private final DataBase repository;
+	private final ProductsRepository repository;
 
 	public Optional<Product> scan(final ProductBarcode productBarcode) {
 		if (!barcodeExists(productBarcode)) {

@@ -1,6 +1,6 @@
 package pl.szczesniak.dominik.pointsale.devices.outputdevices;
 
-import pl.szczesniak.dominik.pointsale.product.domain.Product;
+import pl.szczesniak.dominik.pointsale.products.domain.Product;
 
 import java.util.List;
 

@@ -1,15 +1,16 @@
 package pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain;
 
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.infrastructure.persistence.InMemoryReceiptsRepository;
-import pl.szczesniak.dominik.pointsale.product.domain.Product;
-import pl.szczesniak.dominik.pointsale.product.domain.model.ProductBarcode;
+import pl.szczesniak.dominik.pointsale.products.domain.ProductsRepository;
+import pl.szczesniak.dominik.pointsale.products.domain.Product;
+import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
 
 import java.util.Optional;
 
 public class BarCodeScannerServiceConfiguration {
 
 	public BarCodeScannerService barCodeScannerService() {
-		return new BarCodeScannerService(new InMemoryReceiptsRepository(), new DataBase() {
+		return new BarCodeScannerService(new InMemoryReceiptsRepository(), new ProductsRepository() {
 			@Override
 			public Optional<Product> find(final ProductBarcode productBarcode) {
 				return Optional.empty();

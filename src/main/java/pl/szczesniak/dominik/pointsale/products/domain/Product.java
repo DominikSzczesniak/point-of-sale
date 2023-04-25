@@ -1,12 +1,12 @@
-package pl.szczesniak.dominik.pointsale.product.domain;
+package pl.szczesniak.dominik.pointsale.products.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import pl.szczesniak.dominik.pointsale.product.domain.model.ProductBarcode;
-import pl.szczesniak.dominik.pointsale.product.domain.model.ProductName;
-import pl.szczesniak.dominik.pointsale.product.domain.model.ProductPrice;
+import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
+import pl.szczesniak.dominik.pointsale.products.domain.model.ProductName;
+import pl.szczesniak.dominik.pointsale.products.domain.model.ProductPrice;
 
 @ToString
 @RequiredArgsConstructor

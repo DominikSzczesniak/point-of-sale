@@ -2,10 +2,11 @@ package pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.szczesniak.dominik.pointsale.product.domain.Product;
-import pl.szczesniak.dominik.pointsale.product.domain.model.ProductBarcode;
-import pl.szczesniak.dominik.pointsale.product.domain.model.ProductName;
-import pl.szczesniak.dominik.pointsale.product.domain.model.ProductPrice;
+import pl.szczesniak.dominik.pointsale.products.domain.ProductsRepository;
+import pl.szczesniak.dominik.pointsale.products.domain.Product;
+import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
+import pl.szczesniak.dominik.pointsale.products.domain.model.ProductName;
+import pl.szczesniak.dominik.pointsale.products.domain.model.ProductPrice;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,11 +19,11 @@ import static pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.Prod
 class BarCodeScannerServiceTest {
 
 	private BarCodeScannerService tut;
-	private DataBase repository;
+	private ProductsRepository repository;
 
 	@BeforeEach
 	void setUp() {
-		repository = mock(DataBase.class);
+		repository = mock(ProductsRepository.class);
 		tut = productScannerService(repository);
 	}
 
