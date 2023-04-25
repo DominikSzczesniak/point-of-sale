@@ -61,7 +61,7 @@ class BarCodeScannerServiceTest {
 		final List<Product> products = tut.findAll();
 
 		// then
-		assertThat(products).hasSize(1);
+		assertThat(products).hasSize(1).contains(product);
 	}
 
 	@Test
