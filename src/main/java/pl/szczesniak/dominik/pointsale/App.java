@@ -1,4 +1,4 @@
-package pl.szczesniak.dominik;
+package pl.szczesniak.dominik.pointsale;
 
 import pl.szczesniak.dominik.pointsale.PointOfSaleConsoleApp;
 
