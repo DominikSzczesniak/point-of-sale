@@ -12,8 +12,7 @@ public class Printer {
 	}
 
 	private void printListOfProducts(final List<Product> products) {
-		products
-				.forEach(product -> {
+		products.forEach(product -> {
 					System.out.print(product.getProductName().getValue() + ": ");
 					System.out.println(product.getProductPrice().getValue());
 				});
