@@ -5,7 +5,7 @@ import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
 
 import java.util.Optional;
 
-public interface ProductsRepository {
+interface ProductsRepository {
 
 	Optional<Product> find(final ProductBarcode productBarcode);
 
