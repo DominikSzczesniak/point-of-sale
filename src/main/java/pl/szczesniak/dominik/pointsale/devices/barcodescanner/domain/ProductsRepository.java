@@ -1,5 +1,6 @@
-package pl.szczesniak.dominik.pointsale.products.domain;
+package pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain;
 
+import pl.szczesniak.dominik.pointsale.products.domain.Product;
 import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
 
 import java.util.Optional;

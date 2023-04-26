@@ -2,7 +2,6 @@ package pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.szczesniak.dominik.pointsale.products.domain.ProductsRepository;
 import pl.szczesniak.dominik.pointsale.products.domain.Product;
 import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
 import pl.szczesniak.dominik.pointsale.products.domain.model.ProductName;

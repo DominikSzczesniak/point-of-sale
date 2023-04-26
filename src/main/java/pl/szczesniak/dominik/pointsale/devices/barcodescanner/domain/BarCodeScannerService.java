@@ -2,7 +2,6 @@ package pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import pl.szczesniak.dominik.pointsale.products.domain.ProductsRepository;
 import pl.szczesniak.dominik.pointsale.products.domain.Product;
 import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
 
