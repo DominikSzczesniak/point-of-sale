@@ -1,14 +1,19 @@
 package pl.szczesniak.dominik.pointsale.devices.outputdevices;
 
+import lombok.RequiredArgsConstructor;
+import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.ReceiptsRepository;
 import pl.szczesniak.dominik.pointsale.products.domain.Product;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 public class Printer {
 
-	public void printReceipt(final List<Product> products) {
-		printListOfProducts(products);
-		printPriceToPay(products);
+	private final ReceiptsRepository receipts;
+
+	public void printReceipt() {
+		printListOfProducts(receipts.findAll());
+		printPriceToPay(receipts.findAll());
 	}
 
 	private void printListOfProducts(final List<Product> products) {

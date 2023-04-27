@@ -34,8 +34,8 @@ public class BarCodeScannerService {
 		receipts.addToReceipt(product);
 	}
 
-	public List<Product> findAll() {
-		return receipts.findAll();
-	}
+//	public List<Product> findAll() {
+//		return receipts.findAll();
+//	}
 
 }

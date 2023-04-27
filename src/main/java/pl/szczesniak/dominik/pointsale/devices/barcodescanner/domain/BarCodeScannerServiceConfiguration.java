@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public class BarCodeScannerServiceConfiguration {
 
-	public BarCodeScannerService barCodeScannerService() {
-		return new BarCodeScannerService(new InMemoryReceiptsRepository(), new ProductsRepository() {
+	public BarCodeScannerService barCodeScannerService(final ReceiptsRepository repository) {
+		return new BarCodeScannerService(repository, new ProductsRepository() {
 			@Override
 			public Optional<Product> find(final ProductBarcode productBarcode) {
 				return Optional.empty();

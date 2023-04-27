@@ -2,21 +2,23 @@ package pl.szczesniak.dominik.pointsale;
 
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.BarCodeScannerService;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.BarCodeScannerServiceConfiguration;
+import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.ReceiptsRepository;
+import pl.szczesniak.dominik.pointsale.devices.barcodescanner.infrastructure.persistence.InMemoryReceiptsRepository;
 import pl.szczesniak.dominik.pointsale.devices.outputdevices.LcdDisplay;
 import pl.szczesniak.dominik.pointsale.devices.outputdevices.Printer;
 import pl.szczesniak.dominik.pointsale.products.domain.Product;
 import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
 public class PointOfSaleConsoleApp {
 
 	private final Scanner scan = new Scanner(System.in);
-	private final Printer printer = new Printer();
-	private final LcdDisplay lcdDisplay = new LcdDisplay();
-	private final BarCodeScannerService barCodeScannerService = new BarCodeScannerServiceConfiguration().barCodeScannerService();
+	private final ReceiptsRepository repository = new InMemoryReceiptsRepository();
+	private final Printer printer = new Printer(repository);
+	private final LcdDisplay lcdDisplay = new LcdDisplay(repository);
+	private final BarCodeScannerService barCodeScannerService = new BarCodeScannerServiceConfiguration().barCodeScannerService(repository);
 
 	public PointOfSaleConsoleApp() {
 		System.out.println("|----------------------------------------------------------|");
@@ -43,9 +45,8 @@ public class PointOfSaleConsoleApp {
 	}
 
 	private void exitAndPrintReceipt() {
-		final List<Product> products = barCodeScannerService.findAll();
-		printer.printReceipt(products);
-		lcdDisplay.printPriceToPay(products);
+		printer.printReceipt();
+		lcdDisplay.printPriceToPay();
 	}
 
 	private void scanProduct(final String barcode) {
