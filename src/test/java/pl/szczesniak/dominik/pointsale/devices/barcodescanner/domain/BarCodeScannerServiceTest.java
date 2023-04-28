@@ -2,6 +2,7 @@ package pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.szczesniak.dominik.pointsale.devices.outputdevices.LcdDisplay;
 import pl.szczesniak.dominik.pointsale.products.domain.Product;
 import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
 import pl.szczesniak.dominik.pointsale.products.domain.model.ProductName;
@@ -12,7 +13,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.ProductScannerServiceTestConfiguration.productScannerService;
+import static pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.ProductScannerServiceTestConfiguration.barCodeScannerService;
 
 class BarCodeScannerServiceTest {
 
@@ -22,7 +23,7 @@ class BarCodeScannerServiceTest {
 	@BeforeEach
 	void setUp() {
 		repository = mock(ProductsRepository.class);
-		tut = productScannerService(repository);
+		tut = barCodeScannerService(repository, new LcdDisplay());
 	}
 
 	@Test

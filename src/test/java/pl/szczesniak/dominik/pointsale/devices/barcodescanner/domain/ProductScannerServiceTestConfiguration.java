@@ -1,11 +1,12 @@
 package pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain;
 
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.infrastructure.persistence.InMemoryReceiptsRepository;
+import pl.szczesniak.dominik.pointsale.devices.outputdevices.LcdDisplay;
 
-class ProductScannerServiceTestConfiguration {
+public class ProductScannerServiceTestConfiguration {
 
-	static BarCodeScannerService productScannerService(final ProductsRepository productsRepository) {
-		return new BarCodeScannerService(new InMemoryReceiptsRepository(), productsRepository);
+	public static BarCodeScannerService barCodeScannerService(final ProductsRepository productsRepository, final LcdDisplay lcdDisplay) {
+		return new BarCodeScannerService(new InMemoryReceiptsRepository(), productsRepository, lcdDisplay);
 	}
 
 }

@@ -6,7 +6,7 @@ import pl.szczesniak.dominik.pointsale.products.domain.Product;
 @RequiredArgsConstructor
 public class LcdDisplay {
 
-	public void printMessage(final String message) {
+	public void printErrorMessage(final String message) {
 		System.out.println(message);
 	}
 

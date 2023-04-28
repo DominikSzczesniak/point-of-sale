@@ -53,9 +53,9 @@ public class PointOfSaleConsoleApp {
 	private void scanProduct(final String barcode) {
 		final Optional<Product> scannedProduct = barCodeScannerService.scan(new ProductBarcode(Integer.parseInt(barcode)));
 		if (scannedProduct.isEmpty()) {
-			lcdDisplay.printMessage("Invalid bar-code");
+			lcdDisplay.printErrorMessage("Invalid bar-code");
 		} else if (scannedProduct.get().getProductPrice() == null || scannedProduct.get().getProductName() == null) {
-			lcdDisplay.printMessage("Product not found");
+			lcdDisplay.printErrorMessage("Product not found");
 		} else {
 			lcdDisplay.printProduct(scannedProduct.get());
 		}

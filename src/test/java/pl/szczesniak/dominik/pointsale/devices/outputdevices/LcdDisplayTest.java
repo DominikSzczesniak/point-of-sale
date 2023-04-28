@@ -1,53 +1,77 @@
-//package pl.szczesniak.dominik.pointsale.devices.outputdevices;
-//
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.BarCodeScannerService;
-//import pl.szczesniak.dominik.pointsale.devices.barcodescanner.infrastructure.persistence.InMemoryReceiptsRepository;
-//import pl.szczesniak.dominik.pointsale.products.domain.Product;
-//import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
-//import pl.szczesniak.dominik.pointsale.products.domain.model.ProductName;
-//import pl.szczesniak.dominik.pointsale.products.domain.model.ProductPrice;
-//
-//import java.util.List;
-//import java.util.Optional;
-//
-//import static org.assertj.core.api.Assertions.assertThat;
-//import static org.mockito.Mockito.mock;
-//import static org.mockito.Mockito.when;
-//
-//class LcdDisplayTest {
-//
-//	private InMemoryReceiptsRepository receipts;
-//	private BarCodeScannerService scanner;
-//	private LcdDisplay tut;
-//
-//	@BeforeEach
-//	void setUp() {
-//		scanner = mock(BarCodeScannerService.class);
-//		receipts = new InMemoryReceiptsRepository();
-//		tut = new LcdDisplay(receipts);
-//	}
-//
-//	@Test
-//	void should_find_all_previously_scanned_products() {
-//		// given
-//		final ProductBarcode productBarcode1 = new ProductBarcode(1);
-//		final ProductBarcode productBarcode2 = new ProductBarcode(2);
-//		final ProductBarcode productBarcode3 = new ProductBarcode(3);
-//
-//		when(scanner.scan(productBarcode1)).thenReturn(Optional.of(new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5))));
-//		when(scanner.scan(productBarcode2)).thenReturn(Optional.of(new Product(new ProductName("Cola"), new ProductPrice(2.89f), new ProductBarcode(4))));
-//		when(scanner.scan(productBarcode3)).thenReturn(Optional.of(new Product(new ProductName("Fork"), new ProductPrice(0.89f), new ProductBarcode(1213))));
-//
-//		receipts.addToReceipt(scanner.scan(productBarcode1).get());
-//		receipts.addToReceipt(scanner.scan(productBarcode2).get());
-//		receipts.addToReceipt(scanner.scan(productBarcode3).get());
-//
-//		// when
-//		final List<Product> products = tut.findAll();
-//
-//		// then
-//		assertThat(products).hasSize(3);
-//	}
-//}
+package pl.szczesniak.dominik.pointsale.devices.outputdevices;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.BarCodeScannerService;
+import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.ProductsRepository;
+import pl.szczesniak.dominik.pointsale.products.domain.Product;
+import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
+import pl.szczesniak.dominik.pointsale.products.domain.model.ProductName;
+import pl.szczesniak.dominik.pointsale.products.domain.model.ProductPrice;
+
+import java.util.Optional;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.ProductScannerServiceTestConfiguration.barCodeScannerService;
+
+class LcdDisplayTest {
+
+	private LcdDisplay tut;
+	private BarCodeScannerService scanner;
+	private ProductsRepository repository;
+
+	@BeforeEach
+	void setUp() {
+		tut = mock(LcdDisplay.class);
+		repository = mock(ProductsRepository.class);
+		scanner = barCodeScannerService(repository, tut);
+	}
+
+	@Test
+	void should_perform_print_product_method_when_found_product() {
+		// given
+		final Product product = anyProduct();
+		when(repository.exists(product.getProductBarcode())).thenReturn(true);
+		when(repository.find(product.getProductBarcode())).thenReturn(Optional.of(product));
+
+		// when
+		scanner.scan(product.getProductBarcode());
+
+		// then
+		verify(tut).printProduct(product);
+	}
+
+	@Test
+	void should_perform_print_error_message_method_when_barcode_not_found() {
+		// given
+		final Product product = anyProduct();
+		when(repository.exists(product.getProductBarcode())).thenReturn(false);
+
+		// when
+		scanner.scan(product.getProductBarcode());
+
+		// then
+		verify(tut).printErrorMessage("Invalid bar-code");
+	}
+
+	@Test
+	void should_perform_print_error_message_method_when_product_has_no_productname() {
+		// given
+		final Product product = new Product(null, new ProductPrice(1.89f), new ProductBarcode(5));
+		when(repository.exists(product.getProductBarcode())).thenReturn(true);
+		when(repository.find(product.getProductBarcode())).thenReturn(Optional.of(product));
+
+		// when
+		scanner.scan(product.getProductBarcode());
+
+		// then
+		verify(tut).printErrorMessage("Product not found");
+	}
+
+	private static Product anyProduct() {
+		return new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5));
+	}
+
+}

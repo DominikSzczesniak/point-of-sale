@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.szczesniak.dominik.pointsale.devices.DrawProductsService;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.infrastructure.persistence.InMemoryReceiptsRepository;
+import pl.szczesniak.dominik.pointsale.devices.outputdevices.LcdDisplay;
 import pl.szczesniak.dominik.pointsale.products.domain.Product;
 import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
 import pl.szczesniak.dominik.pointsale.products.domain.model.ProductName;
@@ -29,7 +30,7 @@ class BarCodeScannerServiceIntTest {
 		receipts = new InMemoryReceiptsRepository();
 		drawProductsService = new DrawProductsService(receipts);
 		repository = mock(ProductsRepository.class);
-		tut = new BarCodeScannerService(receipts, repository);
+		tut = new BarCodeScannerService(receipts, repository, new LcdDisplay());
 	}
 
 	@Test
