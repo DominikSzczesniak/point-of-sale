@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import pl.szczesniak.dominik.pointsale.products.domain.Product;
 import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
 
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -33,9 +32,5 @@ public class BarCodeScannerService {
 		}
 		receipts.addToReceipt(product);
 	}
-
-//	public List<Product> findAll() {
-//		return receipts.findAll();
-//	}
 
 }

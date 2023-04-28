@@ -11,9 +11,13 @@ public class Printer {
 
 	private final ReceiptsRepository receipts;
 
-	public void printReceipt() {
+	public List<Product> findAll() {
+		return receipts.findAll();
+	}
+
+	public float printReceipt() {
 		printListOfProducts(receipts.findAll());
-		printPriceToPay(receipts.findAll());
+		return printPriceToPay(receipts.findAll());
 	}
 
 	private void printListOfProducts(final List<Product> products) {
@@ -23,7 +27,7 @@ public class Printer {
 		});
 	}
 
-	private void printPriceToPay(final List<Product> products) {
+	private float printPriceToPay(final List<Product> products) {
 		float price = 0;
 		for (Product product : products) {
 			price += product.getProductPrice().getValue();
@@ -34,6 +38,7 @@ public class Printer {
 		System.out.printf("Price to pay: " + "%.2f", price);
 		System.out.println();
 		System.out.println();
+		return price;
 	}
 
 }

@@ -17,7 +17,7 @@ public class PointOfSaleConsoleApp {
 	private final Scanner scan = new Scanner(System.in);
 	private final ReceiptsRepository repository = new InMemoryReceiptsRepository();
 	private final Printer printer = new Printer(repository);
-	private final LcdDisplay lcdDisplay = new LcdDisplay(repository);
+	private final LcdDisplay lcdDisplay = new LcdDisplay();
 	private final BarCodeScannerService barCodeScannerService = new BarCodeScannerServiceConfiguration().barCodeScannerService(repository);
 
 	public PointOfSaleConsoleApp() {
@@ -45,8 +45,8 @@ public class PointOfSaleConsoleApp {
 	}
 
 	private void exitAndPrintReceipt() {
-		printer.printReceipt();
-		lcdDisplay.printPriceToPay();
+		float price = printer.printReceipt();
+		lcdDisplay.printPrice(price);
 	}
 
 	private void scanProduct(final String barcode) {
