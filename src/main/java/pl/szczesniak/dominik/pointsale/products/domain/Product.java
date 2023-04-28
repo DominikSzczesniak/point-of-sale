@@ -2,6 +2,7 @@ package pl.szczesniak.dominik.pointsale.products.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
@@ -16,6 +17,7 @@ public class Product {
 
 	private final ProductName productName;
 	private final ProductPrice productPrice;
+	@NonNull
 	private final ProductBarcode productBarcode;
 
 }
