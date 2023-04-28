@@ -36,7 +36,7 @@ public class PointOfSaleConsoleApp {
 		}
 
 		if (!"exit".equals(barcode)) {
-			scanProduct(barcode);
+			barCodeScannerService.scan(new ProductBarcode(Integer.parseInt(barcode)));
 			run();
 		}
 	}
@@ -48,17 +48,6 @@ public class PointOfSaleConsoleApp {
 	private void exitAndPrintReceipt() {
 		float price = printer.printReceipt();
 		lcdDisplay.printPrice(price);
-	}
-
-	private void scanProduct(final String barcode) {
-		final Optional<Product> scannedProduct = barCodeScannerService.scan(new ProductBarcode(Integer.parseInt(barcode)));
-		if (scannedProduct.isEmpty()) {
-			lcdDisplay.printErrorMessage("Invalid bar-code");
-		} else if (scannedProduct.get().getProductPrice() == null || scannedProduct.get().getProductName() == null) {
-			lcdDisplay.printErrorMessage("Product not found");
-		} else {
-			lcdDisplay.printProduct(scannedProduct.get());
-		}
 	}
 
 }
