@@ -1,7 +1,7 @@
 package pl.szczesniak.dominik.pointsale.devices.outputdevices;
 
 import lombok.RequiredArgsConstructor;
-import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.ReceiptsRepository;
+import pl.szczesniak.dominik.pointsale.devices.DrawProductsService;
 import pl.szczesniak.dominik.pointsale.products.domain.Product;
 
 import java.util.List;
@@ -9,15 +9,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Printer {
 
-	private final ReceiptsRepository receipts;
-
-	public List<Product> findAll() {
-		return receipts.findAll();
-	}
+	private final DrawProductsService drawProductsService;
 
 	public float printReceipt() {
-		printListOfProducts(receipts.findAll());
-		return printPriceToPay(receipts.findAll());
+		printListOfProducts(drawProductsService.findAll());
+		return printPriceToPay(drawProductsService.findAll());
 	}
 
 	private void printListOfProducts(final List<Product> products) {

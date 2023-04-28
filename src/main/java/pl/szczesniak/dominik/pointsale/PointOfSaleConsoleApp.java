@@ -1,5 +1,6 @@
 package pl.szczesniak.dominik.pointsale;
 
+import pl.szczesniak.dominik.pointsale.devices.DrawProductsService;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.BarCodeScannerService;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.BarCodeScannerServiceConfiguration;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.ReceiptsRepository;
@@ -16,7 +17,7 @@ public class PointOfSaleConsoleApp {
 
 	private final Scanner scan = new Scanner(System.in);
 	private final ReceiptsRepository repository = new InMemoryReceiptsRepository();
-	private final Printer printer = new Printer(repository);
+	private final Printer printer = new Printer(new DrawProductsService(repository));
 	private final LcdDisplay lcdDisplay = new LcdDisplay();
 	private final BarCodeScannerService barCodeScannerService = new BarCodeScannerServiceConfiguration().barCodeScannerService(repository);
 

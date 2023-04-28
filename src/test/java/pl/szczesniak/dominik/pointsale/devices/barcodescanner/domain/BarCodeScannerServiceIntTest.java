@@ -3,8 +3,8 @@ package pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.szczesniak.dominik.pointsale.devices.DrawProductsService;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.infrastructure.persistence.InMemoryReceiptsRepository;
-import pl.szczesniak.dominik.pointsale.devices.outputdevices.Printer;
 import pl.szczesniak.dominik.pointsale.products.domain.Product;
 import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
 import pl.szczesniak.dominik.pointsale.products.domain.model.ProductName;
@@ -16,19 +16,18 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.ProductScannerServiceTestConfiguration.productScannerService;
 
 class BarCodeScannerServiceIntTest {
 
 	private BarCodeScannerService tut;
 	private ProductsRepository repository;
-	private Printer printer;
+	private DrawProductsService drawProductsService;
 	private InMemoryReceiptsRepository receipts;
 
 	@BeforeEach
 	void setUp() {
 		receipts = new InMemoryReceiptsRepository();
-		printer = new Printer(receipts);
+		drawProductsService = new DrawProductsService(receipts);
 		repository = mock(ProductsRepository.class);
 		tut = new BarCodeScannerService(receipts, repository);
 	}
@@ -42,7 +41,7 @@ class BarCodeScannerServiceIntTest {
 		tut.scan(product.getProductBarcode()).get();
 
 		// when
-		final List<Product> products = printer.findAll();
+		final List<Product> products = drawProductsService.findAll();
 
 		// then
 		assertThat(products).hasSize(1).contains(product);
@@ -63,7 +62,7 @@ class BarCodeScannerServiceIntTest {
 		tut.scan(productBarcode2);
 
 		// then
-		assertThat(printer.findAll()).isEmpty();
+		assertThat(drawProductsService.findAll()).isEmpty();
 	}
 
 	@Test
@@ -74,7 +73,7 @@ class BarCodeScannerServiceIntTest {
 
 		// when
 		tut.scan(createdProductBarcode);
-		final List<Product> products = printer.findAll();
+		final List<Product> products = drawProductsService.findAll();
 
 		// then
 		assertThat(products).isEmpty();
