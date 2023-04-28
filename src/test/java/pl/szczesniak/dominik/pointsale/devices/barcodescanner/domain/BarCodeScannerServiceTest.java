@@ -27,7 +27,7 @@ class BarCodeScannerServiceTest {
 	}
 
 	@Test
-	void should_find_product() {
+	void scanned_product_should_equal_previously_given_product() {
 		// given
 		final Product product = randomProduct();
 		when(repository.exists(product.getProductBarcode())).thenReturn(true);
