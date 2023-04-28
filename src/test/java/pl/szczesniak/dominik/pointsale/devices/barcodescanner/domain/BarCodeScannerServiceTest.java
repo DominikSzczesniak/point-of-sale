@@ -53,6 +53,8 @@ class BarCodeScannerServiceTest {
 		assertThat(scannedProduct).isEmpty();
 	}
 
+
+
 	private static Product randomProduct() {
 		return new Product(new ProductName("Water"), new ProductPrice(1.89f), new ProductBarcode(5));
 	}
