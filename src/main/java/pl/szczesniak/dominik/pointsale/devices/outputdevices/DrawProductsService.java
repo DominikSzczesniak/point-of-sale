@@ -1,4 +1,4 @@
-package pl.szczesniak.dominik.pointsale.devices;
+package pl.szczesniak.dominik.pointsale.devices.outputdevices;
 
 import lombok.RequiredArgsConstructor;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.ReceiptsRepository;

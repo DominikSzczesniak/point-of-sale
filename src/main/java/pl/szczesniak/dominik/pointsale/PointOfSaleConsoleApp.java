@@ -1,6 +1,6 @@
 package pl.szczesniak.dominik.pointsale;
 
-import pl.szczesniak.dominik.pointsale.devices.DrawProductsService;
+import pl.szczesniak.dominik.pointsale.devices.outputdevices.DrawProductsService;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.BarCodeScannerService;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.BarCodeScannerServiceConfiguration;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.ReceiptsRepository;

@@ -3,7 +3,7 @@ package pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.szczesniak.dominik.pointsale.devices.DrawProductsService;
+import pl.szczesniak.dominik.pointsale.devices.outputdevices.DrawProductsService;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.infrastructure.persistence.InMemoryReceiptsRepository;
 import pl.szczesniak.dominik.pointsale.products.domain.Product;
 import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
