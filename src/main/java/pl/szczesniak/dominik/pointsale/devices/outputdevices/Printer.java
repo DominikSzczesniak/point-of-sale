@@ -1,7 +1,6 @@
 package pl.szczesniak.dominik.pointsale.devices.outputdevices;
 
 import lombok.RequiredArgsConstructor;
-import pl.szczesniak.dominik.pointsale.devices.DrawProductsService;
 import pl.szczesniak.dominik.pointsale.products.domain.Product;
 
 import java.util.List;

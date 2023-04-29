@@ -1,16 +1,14 @@
 package pl.szczesniak.dominik.pointsale;
 
-import pl.szczesniak.dominik.pointsale.devices.DrawProductsService;
+import pl.szczesniak.dominik.pointsale.devices.outputdevices.DrawProductsService;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.BarCodeScannerService;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.BarCodeScannerServiceConfiguration;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.domain.ReceiptsRepository;
 import pl.szczesniak.dominik.pointsale.devices.barcodescanner.infrastructure.persistence.InMemoryReceiptsRepository;
 import pl.szczesniak.dominik.pointsale.devices.outputdevices.LcdDisplay;
 import pl.szczesniak.dominik.pointsale.devices.outputdevices.Printer;
-import pl.szczesniak.dominik.pointsale.products.domain.Product;
 import pl.szczesniak.dominik.pointsale.products.domain.model.ProductBarcode;
 
-import java.util.Optional;
 import java.util.Scanner;
 
 public class PointOfSaleConsoleApp {
